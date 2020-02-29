@@ -1,6 +1,7 @@
 pragma solidity ^0.5.12;
 
-// a simple contract that interacts with Uniswap to swap the ether you send with your designed ERC20 token
+// A simple contract that interacts with Uniswap to swap the ether you send with your designed ERC20 token
+// I'm swapping for DAI in this particular example
 contract UniswapTrade {
 
     // Initialisation parameters for uniswap on kovan testnet
