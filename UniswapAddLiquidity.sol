@@ -2,7 +2,7 @@ pragma solidity ^0.5.12;
 
 import './IERC20.sol';
 
-// a simple contract that interacts with Uniswap to add your assets to the liquidity pool
+// a simple contract that interacts with Uniswap V1 to add your assets to the liquidity pool
 contract UniswapAddLiquidity {
 
     // Initialisation parameters for uniswap on kovan testnet
