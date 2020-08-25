@@ -1,6 +1,6 @@
 pragma solidity ^0.5.12;
 
-// A simple contract that interacts with Uniswap to swap the ether you send with your desired ERC20 token
+// A simple contract that interacts with Uniswap V1 to swap the ether you send with your desired ERC20 token
 // I'm swapping for DAI in this particular example
 contract UniswapTrade {
 
