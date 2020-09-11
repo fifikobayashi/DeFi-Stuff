@@ -83,7 +83,7 @@ contract Flashloan is FlashLoanReceiverBase {
         uniswapV2Router.swapETHForExactTokens{ value: msg.value }(amountToTrade, getPathForETHToToken(ERC20Address), address(this), deadline);
 
         // refund leftover ETH to user
-        msg.sender.call{ value: address(this).balance }("");
+        // msg.sender.call{ value: address(this).balance }(""); // would have been a bug here returning remainder ETH balance before the flash loan is paid
     }
 
     // Using a WETH wrapper here since there are no direct ETH pairs in Uniswap v2 and sushiswap v1 is based on uniswap v2
