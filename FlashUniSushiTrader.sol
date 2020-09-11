@@ -1,6 +1,12 @@
 pragma solidity 0.6.12;
 
-import "https://github.com/sushiswap/sushiswap/blob/master/contracts/uniswapv2/interfaces/IUniswapV2Router02.sol";
+// uncomment if trading with Uniswap V2 Router02
+import "https://github.com/Uniswap/uniswap-v2-periphery/blob/master/contracts/interfaces/IUniswapV2Router02.sol";
+
+// uncomment if trading with Sushiswap Router02
+// import "https://github.com/sushiswap/sushiswap/blob/master/contracts/uniswapv2/interfaces/IUniswapV2Router02.sol";
+
+// Aaave flash loan dependencies from https://docs.aave.com/developers/tutorials/performing-a-flash-loan/...-with-remix
 import "https://github.com/aave/flashloan-box/blob/Remix/contracts/aave/FlashLoanReceiverBase.sol";
 import "https://github.com/aave/flashloan-box/blob/Remix/contracts/aave/ILendingPoolAddressesProvider.sol";
 import "https://github.com/aave/flashloan-box/blob/Remix/contracts/aave/ILendingPool.sol";
