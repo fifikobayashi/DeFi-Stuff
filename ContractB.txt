@@ -25,9 +25,8 @@ contract ContractB {
     }
 
     // Approves the incuree to incure debt on your behalf
-    function approveDebtIncuree(address borrower, uint256 amount, address asset) public {
-        (, address stableDebtTokenAddress,) = dataProvider.getReserveTokensAddresses(asset);
-        IStableDebtToken(stableDebtTokenAddress).approveDelegation(borrower, amount);
+    function approveDebtIncuree(address borrower, uint256 amount, address debtAsset) public {
+        IStableDebtToken(debtAsset).approveDelegation(borrower, amount);
     }
     
     // Repay an uncollaterised loan
