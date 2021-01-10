@@ -1,0 +1,59 @@
+pragma solidity 0.6.12;
+
+import { IERC20, ILendingPool, IProtocolDataProvider, IStableDebtToken } from './Interfaces.sol';
+import { SafeERC20 } from './Libraries.sol';
+
+contract ContractB {
+    using SafeERC20 for IERC20;
+
+    ILendingPool constant lendingPool = ILendingPool(address(0xE0fBa4Fc209b4948668006B2bE61711b7f465bAe)); // Kovan
+    IProtocolDataProvider constant dataProvider = IProtocolDataProvider(address(0x744C1aaA95232EeF8A9994C4E0b3a89659D9AB79)); // Kovan
+    
+    address owner;
+
+    constructor () public {
+        owner = msg.sender;
+    }
+
+    // Deposits collateral into the Aave, to enable credit delegation
+    function depositCollateral(address asset, uint256 amount, bool isPull) public {
+        if (isPull) {
+            IERC20(asset).safeTransferFrom(msg.sender, address(this), amount);
+        }
+        IERC20(asset).safeApprove(address(lendingPool), amount);
+        lendingPool.deposit(asset, amount, address(this), 0);
+    }
+
+    // Approves the incuree to incure debt on your behalf
+    function approveDebtIncuree(address borrower, uint256 amount, address asset) public {
+        (, address stableDebtTokenAddress,) = dataProvider.getReserveTokensAddresses(asset);
+        IStableDebtToken(stableDebtTokenAddress).approveDelegation(borrower, amount);
+    }
+    
+    // Repay an uncollaterised loan
+    function repayBorrower(uint256 amount, address asset) public {
+        IERC20(asset).safeTransferFrom(msg.sender, address(this), amount);
+        IERC20(asset).safeApprove(address(lendingPool), amount);
+        lendingPool.repay(asset, amount, 1, address(this));
+    }
+    
+    // Withdraw all of a collateral as the underlying asset, if no outstanding loans delegated
+    function withdrawCollateral(address asset) public {
+        (address aTokenAddress,,) = dataProvider.getReserveTokensAddresses(asset);
+        uint256 assetBalance = IERC20(aTokenAddress).balanceOf(address(this));
+        lendingPool.withdraw(asset, assetBalance, owner);
+    }
+    
+    /*
+    * Rugpull yourself to drain all ETH and ERC20 tokens from the contract
+    */
+    function rugPull(address _erc20Asset) public payable {
+        
+        // withdraw all ETH
+        msg.sender.call{ value: address(this).balance }("");
+        
+        // withdraw all x ERC20 tokens
+        IERC20(_erc20Asset).transfer(msg.sender, IERC20(_erc20Asset).balanceOf(address(this)));
+
+    }
+}
