@@ -22,6 +22,8 @@ contract ContractB {
         }
         IERC20(asset).safeApprove(address(lendingPool), amount);
         lendingPool.deposit(asset, amount, address(this), 0);
+        
+        lendingPool.setUserUseReserveAsCollateral(asset, true);
     }
 
     // Approves the incuree to incure debt on your behalf
